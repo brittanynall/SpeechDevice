@@ -1,6 +1,5 @@
 from PyQt5 import QtGui, QtCore, QtWidgets, uic
 from PyQt5.QtCore import pyqtSlot
-import Log
 
 class Main(QtWidgets.QMainWindow):
     def __init__(self):
