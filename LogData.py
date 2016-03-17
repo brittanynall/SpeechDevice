@@ -1,27 +1,50 @@
 import sqlite3
+import sys
 
 class LogData():
     def __init__(self):
-        #code to recognize already existing database
-        sqlite_file = 'logged_data.sqlite'
-        self.logging_table = 'logged_table'
-        self.action_col = 'action'
-        self.col_type = 'TEXT'
-        self.datetime_col = 'datetime'
-
-        self.conn = sqlite3.connect(sqlite_file)
-        self.c = self.conn.cursor()
-        self.c.execute('CREATE TABLE IF NOT EXISTS {lt} ({ac} {act})' .format(lt=self.logging_table, ac = self.action_col, act = self.col_type))
+        self.connect()
         try:
-            self.c.execute("ALTER TABLE {lt} ADD COLUMN'{dt}' " .format(lt=self.logging_table, dt = self.datetime_col))
+            self.c.execute('CREATE TABLE IF NOT EXISTS LoggedData(datetime , action TEXT)')
         except:
             pass
 
     def add_data(self, action):
-        self.c.execute("INSERT INTO {lt} ({ac}, {dt}) VALUES('{act}', CURRENT_TIMESTAMP)" .format(lt = self.logging_table, ac = self.action_col, dt = self.datetime_col, act = action))
+        self.connect()
+        try:
+            self.c.execute("INSERT INTO LoggedData (datetime, action) VALUES(CURRENT_TIMESTAMP, :ACT)", {'ACT':action})
+        except:
+            self.conn.rollback()
+
+        self.conn.commit()
+        self.print_data()
+        self.c.close()
 
     def print_data(self):
-        row = self.c.execute("SELECT action, datetime FROM {lt}" .format(lt=self.logging_table))
-        for c in row:
-            print c[0]
-            print c[1]
+        row = self.c.execute("SELECT action, datetime FROM LoggedData")
+        for col in row:
+            print col
+
+    def storeDB(self):
+        mem = sqlite3.Connection(':memory:')
+        memcon = mem.cursor()
+        try:
+            mem.execute('CREATE TABLE IF NOT EXISTS LoggedData(datetime , action TEXT)')
+        except:
+            pass
+        try:
+            row = self.c.execute("SELECT datetime, action FROM LoggedData")
+            for col in row:
+                mem.execute("INSERT INTO LoggedData (datetime, action) VALUES(:TIM, :ACT)", {'TIM':col[0], 'ACT':col[1]})
+        except:
+            memcon.rollback()
+
+        mem.commit()
+        mem.close()
+        self.c.execute("DELETE FROM LoggedData")
+
+
+    def connect(self):
+        self.conn = sqlite3.connect('loggeddata.db')
+        self.c = self.conn.cursor()
+
