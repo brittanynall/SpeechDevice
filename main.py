@@ -14,6 +14,13 @@ class Main(QtWidgets.QMainWindow):
     def button_clicked(self):
         self.ui.pushButton.setText("Hello!")
 
+    def update_button_text(self):
+        self.ui.pushButton.setText("Hi!")
+
+    def createDispatcher(self):
+        dispatcher = {'update_button_text' : self.update_button_text}
+        return dispatcher
+
 if __name__ == '__main__':
     import sys
  
@@ -25,9 +32,11 @@ if __name__ == '__main__':
 
     # start the rpc server
     try:
-        server = RpcServer(main_window)
+        server = RpcServer(callbacks=main_window.createDispatcher())
         server_thread = Thread(target=server.start)
         server_thread.start()
+        network_service = NetworkService()
+        network_service.start_service()
         sys.exit(app.exec_())
     except KeyboardInterrupt:
         pass

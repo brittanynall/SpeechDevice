@@ -4,10 +4,14 @@ from werkzeug.serving import run_simple
 from jsonrpc import JSONRPCResponseManager, dispatcher
 
 class RpcServer(object):
-        def __init__(self, parent, host='localhost', port=8000, ):
+        def __init__(self, callbacks=None, host='localhost', port=8000, ):
             self.host = host
             self.port = port
-            self.parent = parent
+
+            # add the method names and the handlers to the dispatcher methods.
+            if callbacks:
+                for keys in callbacks.keys():
+                    dispatcher[keys] = callbacks[keys]
 
         @Request.application
         def application(self, request):
@@ -15,6 +19,7 @@ class RpcServer(object):
             dispatcher["echo"] = lambda s: s
             dispatcher["add"] = lambda a,b: a+b
 
+            print("Request data",request.data)
             response = JSONRPCResponseManager.handle(request.data, dispatcher)
             return Response(response.json, mimetype="application/json")
 
