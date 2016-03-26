@@ -7,9 +7,8 @@ class Button:
         self.text = text
         self.pic = pic
 
-    def __str__(self):
-        d = {'id' : self.id, 'text' : self.text}
-        return json.dumps(d)
+    def get_dict(self):
+        return  {'id' : self.id, 'text' : self.text}
 
     @staticmethod
     def builder():
@@ -67,6 +66,6 @@ class ButtonArray:
     def __str__(self):
         l = []
         for btn in self.btn_list:
-            l.append(str(btn))
-        d = {"buttons": l}
+            l.append(btn.get_dict())
+        d = {'buttons': l}
         return json.dumps(d)

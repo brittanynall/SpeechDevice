@@ -32,6 +32,7 @@ class Main(QtWidgets.QMainWindow):
 
     ### All methods RPC methods ###
     def get_btns(self):
+        debug_logger.debug(str(self.btn_array))
         return str(self.btn_array)
 
     def set_btn_text(self, id, text):
@@ -41,7 +42,7 @@ class Main(QtWidgets.QMainWindow):
             pass
 
     ### RPC Calback Methods End ###
-    
+
     def create_dispatcher(self):
         dispatcher = {'update_button_text' : self.update_button_text,
                       'get_btns': self.get_btns,
