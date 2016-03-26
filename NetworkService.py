@@ -1,6 +1,9 @@
 import socket
 import json
 from threading import Thread
+import logging
+
+debug_logger = logging.getLogger(__name__)
 
 class NetworkService:
     LOCALHOST = ''
@@ -39,13 +42,14 @@ class NetworkService:
                 while True:
                     msg, addr = udpSocket.recvfrom(1024)
                     if self.networkService.isBroadcastPacket(msg.decode('utf-8')):
+                        debug_logger.debug("Device discovered %s" % addr[0])
                         #networkService.add_client(msg, addr)
                         self.reply_discovery_msg(udpSocket, addr)
             finally:
                 udpSocket.close()
 
         def reply_discovery_msg(self, connection, addr):
-            ack = {'SERVICE':'ACD','TYPE':'BROADCAST','COMMAND':'ACK','DEV_NAME':'TEST'}
+            ack = {'SERVICE':'ACD','TYPE':'BROADCAST','COMMAND':'ACK','DEV_NAME':'Speech Device - Test'}
             jsonAck = json.dumps(ack)
             connection.sendto(jsonAck.encode('utf-8'), addr)
 

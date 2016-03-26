@@ -4,7 +4,7 @@ from werkzeug.serving import run_simple
 from jsonrpc import JSONRPCResponseManager, dispatcher
 
 class RpcServer(object):
-        def __init__(self, callbacks=None, host='localhost', port=8000, ):
+        def __init__(self, callbacks=None, host='', port=8000, ):
             self.host = host
             self.port = port
 
