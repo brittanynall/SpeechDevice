@@ -9,6 +9,10 @@ class LogData():
         except:
             pass
 
+    def connect(self):
+        self.conn = sqlite3.connect('loggeddata.db')
+        self.c = self.conn.cursor()
+
     def add_data(self, action):
         self.connect()
         try:
@@ -17,13 +21,15 @@ class LogData():
             self.conn.rollback()
 
         self.conn.commit()
-        self.print_data()
         self.c.close()
 
     def print_data(self):
+        self.connect()
         row = self.c.execute("SELECT action, datetime FROM LoggedData")
         for col in row:
             print col
+
+        self.c.close()
 
     def storeDB(self):
         mem = sqlite3.Connection(':memory:')
@@ -44,7 +50,4 @@ class LogData():
         self.c.execute("DELETE FROM LoggedData")
 
 
-    def connect(self):
-        self.conn = sqlite3.connect('loggeddata.db')
-        self.c = self.conn.cursor()
 
