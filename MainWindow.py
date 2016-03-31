@@ -1,4 +1,5 @@
 from PyQt5 import QtGui, QtCore, QtWidgets, uic
+from PyQt5.QtCore import pyqtSlot
 import logging
 from Button import *
 
@@ -6,22 +7,29 @@ debug_logger = logging.getLogger(__name__)
 
 
 class Main(QtWidgets.QMainWindow):
-    def __init__(self):
-        QtWidgets.QMainWindow.__init__(self, None)
+    def __init__(self, db_logger=None):
+        QtWidgets.QMainWindow.__init__(self, parent=None)
         self.ui = uic.loadUi('main.ui', self)
         self.ui.show()
-
+        self.db_logger = db_logger
         self.btn_array = ButtonArray()
 
         # Add button to the btn array
         for btn in self.create_buttons():
             self.btn_array.add_btn(btn)
 
-    def button_clicked(self):
-        self.ui.pushButton.setText("Hello!")
+        # connect buttons to slot
+        self.ui.btn1
 
-    def update_button_text(self):
-        self.ui.pushButton.setText("Hi!")
+    def on_btn_clicked(self, text):
+        """
+        Common slot for all
+        :return:
+        """
+        if self.db_logger:
+            self.db_logger.add_data(text)
+
+        print (text)
 
     ### All methods RPC methods ###
     def get_btns(self):
@@ -37,7 +45,7 @@ class Main(QtWidgets.QMainWindow):
     ### RPC Calback Methods End ###
 
     def create_dispatcher(self):
-        dispatcher = {'update_button_text': self.update_button_text,
+        dispatcher = {#'update_button_text': self.update_button_text,
                       'get_btns': self.get_btns,
                       'set_btn_text': self.set_btn_text}
         return dispatcher
@@ -63,6 +71,7 @@ class Main(QtWidgets.QMainWindow):
                         .pic(QtGui.QIcon(qbtns[btn][1]))
                         .uri(qbtns[btn][1].split('/')[1])
                         .icon_size(QtCore.QSize(qbtns[btn][0].width(), qbtns[btn][0].height()))
+                        .callback(self.on_btn_clicked)
                         .build())
 
         return btns

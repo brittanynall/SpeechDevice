@@ -4,6 +4,7 @@ from RpcService import RpcServer
 from threading import Thread
 import logging
 import MainWindow
+from LogData import LogData
 
 debug_logger = logging.getLogger(__name__)
 
@@ -12,8 +13,9 @@ if __name__ == '__main__':
  
     app = QtWidgets.QApplication(sys.argv)
 
+    db = LogData()
     # instantiate the application window
-    main_window = MainWindow.Main()
+    main_window = MainWindow.Main(db_logger=db)
     main_window.show()
 
     try:

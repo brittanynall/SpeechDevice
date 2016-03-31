@@ -48,31 +48,6 @@ class RpcServer(object):
             return urls.dispatch(lambda e, v: self.views[e](environ, request, **v),
                          catch_http_exceptions=True)
 
-            # Dispatcher is dictionary {<method-name>: callable}
-            # dispatcher["echo"] = lambda s: s
-            # dispatcher["add"] = lambda a,b: a+b
-            #
-            # print("Request data",request.data)
-            # print (request.path)
-            # req = Request(environ)
-            # if req.method == 'GET':
-            #     if '/jsonrpc' in req.path:
-            #
-            #
-            #
-            # response = Response("Hi",mimetype="text/plain")
-            # return response(environ, start_response)
-
-            # if '/jsonrpc' in request.path:
-            #     response = JSONRPCResponseManager.handle(request.data, dispatcher)
-            #     return Response(response.json, mimetype="application/json")
-            # elif '/images' in request.path:
-            #     file = request.data
-            #     return Response(wrap_file(environ, file), direct_passthrough=True)
-            #     #return Response("Hello", mimetype="text/plain")
-            # else:
-            #     return Response("red", mimetype="text/plain")
-
         def start(self):
             self.app = run_simple(self.host, self.port, self.application)
 

@@ -1,13 +1,14 @@
 import json
 
 class Button:
-    def __init__(self, q_btn, id, text='None', uri='None', pic='None', icon_size='None'):
+    def __init__(self, q_btn, id, text=None, uri=None, pic=None, icon_size=None, callback=None):
         self.q_btn = q_btn
         self.id = id
         self.text = text
         self.pic = pic
         self.uri = uri
-
+        self.callback = callback
+        self.q_btn.clicked.connect(self.btn_pressed)
         self.q_btn.setText(text)
 
         if pic:
@@ -15,7 +16,10 @@ class Button:
             if icon_size: self.q_btn.setIconSize(icon_size)
 
     def get_dict(self):
-        return  {'id' : self.id, 'text' : self.text, 'uri' : self.uri}
+        return {'id' : self.id, 'text' : self.text, 'uri' : self.uri}
+
+    def btn_pressed(self):
+        self.callback(self.text)
 
     @staticmethod
     def builder():
@@ -31,20 +35,24 @@ class ButtonBuilder:
         self.id = id
         return self
 
-    def text(self, text='None'):
+    def text(self, text=None):
         self.text = text
         return self
 
-    def pic(self, pic='None'):
+    def pic(self, pic=None):
         self.pic = pic
         return self
 
-    def icon_size(self, icon_size='None'):
+    def icon_size(self, icon_size=None):
         self.icon_size = icon_size
         return self
 
-    def uri(self, uri='None'):
+    def uri(self, uri=None):
         self.uri = uri
+        return self
+
+    def callback(self, callback):
+        self.callback = callback
         return self
 
     def build(self):
@@ -53,7 +61,8 @@ class ButtonBuilder:
                       text=self.text,
                       pic=self.pic,
                       uri=self.uri,
-                      icon_size=self.icon_size)
+                      icon_size=self.icon_size,
+                      callback=self.callback)
 
 class ButtonArray:
     def __init__(self):
