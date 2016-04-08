@@ -25,56 +25,56 @@ class Main(QtWidgets.QMainWindow):
         #time = datetime.datetime.now()
         action = self.ui.pushButton.text()
         self.db.add_data(action)
-        #self.sp.say_action(action)
+        self.sp.say_action(action)
 
     def button2_clicked(self, num):
         #time = datetime.datetime.now()
         action = self.ui.pushButton_2.text()
         self.db.add_data(action)
-        #self.sp.say_action(action)
+        self.sp.say_action(action)
 
     def button3_clicked(self, num):
         #time = datetime.datetime.now()
         action = self.ui.pushButton_3.text()
         self.db.add_data(action)
-        #self.sp.say_action(action)
+        self.sp.say_action(action)
 
     def button4_clicked(self, num):
         #time = datetime.datetime.now()
         action = self.ui.pushButton_4.text()
         self.db.add_data(action)
-        #self.sp.say_action(action)
+        self.sp.say_action(action)
 
     def button5_clicked(self, num):
         #time = datetime.datetime.now()
         action = self.ui.pushButton_5.text()
         self.db.add_data(action)
-        #self.sp.say_action(action)
+        self.sp.say_action(action)
 
     def button6_clicked(self, num):
         #time = datetime.datetime.now()
         action = self.ui.pushButton_6.text()
         self.db.add_data(action)
-        #self.sp.say_action(action)
+        self.sp.say_action(action)
 
     def button7_clicked(self, num):
         #time = datetime.datetime.now()
         action = self.ui.pushButton_7.text()
         self.db.add_data(action)
         self.db.print_data()
-        #self.sp.say_action(action)
+        self.sp.say_action(action)
 
     def button8_clicked(self, num):
         #time = datetime.datetime.now()
         action = self.ui.pushButton_8.text()
         self.db.add_data(action)
-       # self.sp.say_action(action)
+        self.sp.say_action(action)
 
     def button9_clicked(self, num):
         #time = datetime.datetime.now()
         action = self.ui.pushButton_9.text()
         self.db.add_data(action)
-       # self.sp.say_action(action)
+        self.sp.say_action(action)
 
 if __name__ == '__main__':
     import sys

@@ -11,6 +11,7 @@ class LogData():
 
     def connect(self):
         self.conn = sqlite3.connect('loggeddata.db')
+        #mem = sqlite3.Connection(':memory:')
         self.c = self.conn.cursor()
 
     def add_data(self, action):
@@ -31,23 +32,6 @@ class LogData():
 
         self.c.close()
 
-    def storeDB(self):
-        mem = sqlite3.Connection(':memory:')
-        memcon = mem.cursor()
-        try:
-            mem.execute('CREATE TABLE IF NOT EXISTS LoggedData(datetime , action TEXT)')
-        except:
-            pass
-        try:
-            row = self.c.execute("SELECT datetime, action FROM LoggedData")
-            for col in row:
-                mem.execute("INSERT INTO LoggedData (datetime, action) VALUES(:TIM, :ACT)", {'TIM':col[0], 'ACT':col[1]})
-        except:
-            memcon.rollback()
-
-        mem.commit()
-        mem.close()
-        self.c.execute("DELETE FROM LoggedData")
 
 
 
