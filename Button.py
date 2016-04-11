@@ -88,7 +88,6 @@ class ButtonArray:
         else: raise KeyError
 
 
-
     def __len__(self):
         return len(self.btn_list)
 

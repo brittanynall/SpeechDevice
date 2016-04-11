@@ -42,12 +42,17 @@ class Main(QtWidgets.QMainWindow):
         except KeyError:
             pass
 
+    def get_data(self):
+        self.db_logger.get_logs()
+        return str(self.db_logger)
+
     ### RPC Calback Methods End ###
 
     def create_dispatcher(self):
         dispatcher = {#'update_button_text': self.update_button_text,
                       'get_btns': self.get_btns,
-                      'set_btn_text': self.set_btn_text}
+                      'set_btn_text': self.set_btn_text,
+                      'get_data' : self.get_data}
         return dispatcher
 
     def create_buttons(self):
