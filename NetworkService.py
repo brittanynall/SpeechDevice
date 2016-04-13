@@ -49,7 +49,7 @@ class NetworkService:
                 udpSocket.close()
 
         def reply_discovery_msg(self, connection, addr):
-            ack = {'SERVICE':'ACD','TYPE':'BROADCAST','COMMAND':'ACK','DEV_NAME':'Speech Device - Test'}
+            ack = {'SERVICE':'ACD','TYPE':'BROADCAST','COMMAND':'ACK','DEV_NAME':'Speech Device'}
             jsonAck = json.dumps(ack)
             connection.sendto(jsonAck.encode('utf-8'), addr)
 
