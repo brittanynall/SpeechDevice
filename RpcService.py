@@ -48,9 +48,9 @@ class RpcServer(object):
         def save_file(self, environ, request):
             try:
                 file = request.files['image']
-                filename = 'images/'+request.form["btn_name"]
+                filename = 'images/'+request.form["btn_name"].strip('"')+".jpg"
                 id = request.form['btn_id']
-                txt = request.form['btn_text']
+                txt = request.form['btn_text'].strip('"')
                 file.save(filename)
                 dispatcher['update_image'](id, txt, filename)
             except Exception:

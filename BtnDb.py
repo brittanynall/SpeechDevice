@@ -49,16 +49,18 @@ class BtnDb:
 
 if __name__ == "__main__":
     logdata = BtnDb()
-    logdata.add_data('0', 'milk',      'images/milk.jpg')
-    logdata.add_data('1', 'bathroom',  'images/bathroom.jpg')
-    logdata.add_data('2', 'blanket',   'images/blanket.jpg')
-    logdata.add_data('3', 'mom',       'images/mom.jpg')
-    logdata.add_data('4', 'juice',     'images/juice.jpg')
-    logdata.add_data('5', 'tv',        'images/tv.jpg')
-    logdata.add_data('6', 'toilet',    'images/toilet_signs.jpg')
-    logdata.add_data('7', 'snack',     'images/fruit_snack.jpg')
-    logdata.add_data('7', 'carrot',    'images/carrot.jpg')
-    logdata.add_data('8', 'bed',       'images/carrot.jpg')
+    if True:
+        logdata.add_data('0', 'milk',      'images/milk.jpg')
+        logdata.add_data('1', 'bathroom',  'images/bathroom.jpg')
+        logdata.add_data('2', 'blanket',   'images/blanket.jpg')
+        logdata.add_data('3', 'mom',       'images/mom.jpg')
+        logdata.add_data('4', 'juice',     'images/juice.jpg')
+        logdata.add_data('5', 'tv',        'images/tv.jpg')
+        logdata.add_data('6', 'toilet',    'images/toilet_signs.jpg')
+        logdata.add_data('7', 'snack',     'images/fruit_snack.jpg')
+        logdata.add_data('7', 'carrot',    'images/carrot.jpg')
+        logdata.add_data('8', 'bed',       'images/carrot.jpg')
+
     logdata.print_data()
     print(logdata.exists('0'))
     print(logdata.get_total())
