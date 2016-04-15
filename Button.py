@@ -11,19 +11,38 @@ class Button:
         self.q_btn.clicked.connect(self.btn_pressed)
         self.q_btn.setText(text)
 
-        if pic:
-            self.q_btn.setIcon(pic)
-            if icon_size: self.q_btn.setIconSize(icon_size)
+        self.set_pic(pic, icon_size)
+
+    def btn_height(self):
+        return self.q_btn.height()
+
+    def btn_width(self):
+        return self.q_btn.width()
 
     def get_dict(self):
-        return {'id' : self.id, 'text' : self.text, 'uri' : self.uri}
+        return {'id': self.id,
+                'text': self.text,
+                'uri': self.uri.replace("/", "?"),
+                'height': self.btn_height(),
+                'width': self.btn_width()}
 
     def btn_pressed(self):
         self.callback(self.text)
 
+    def set_text(self, txt):
+        self.text = txt
+
+    def set_uri(self, uri):
+        self.uri = uri
+
+    def set_pic(self, pic, icon_size):
+        self.q_btn.setIcon(pic)
+        self.q_btn.setIconSize(icon_size)
+
     @staticmethod
     def builder():
         return ButtonBuilder()
+
 
 class ButtonBuilder:
 
@@ -72,6 +91,9 @@ class ButtonArray:
     def add_btn(self, btn):
         self.btn_list.append(btn)
 
+    def get_btn(self, id):
+        return self.btn_list[id]
+
     def __iter__(self):
         return self
 
@@ -86,8 +108,6 @@ class ButtonArray:
         for btn in self.btn_list:
             if btn.id == id: return btn.q_btn
         else: raise KeyError
-
-
 
     def __len__(self):
         return len(self.btn_list)

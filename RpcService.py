@@ -3,6 +3,8 @@ from werkzeug.routing import Map, Rule
 from werkzeug.wrappers import Request, Response
 from werkzeug.serving import run_simple
 from werkzeug.wsgi import wrap_file, responder
+from werkzeug.datastructures import FileStorage
+
 import os
 import logging
 
@@ -17,11 +19,13 @@ class RpcServer(object):
             self.port = port
 
             self.views = {'get_rpc': self.get_rpc,
-                          'images':self.get_file}
+                          'images': self.get_file,
+                          'save_file': self.save_file}
 
             self.url_map = Map([Rule('/', endpoint='get_rpc'),
                                 Rule('/jsonrpc', endpoint='get_rpc'),
-                                Rule('/images', endpoint='images')])
+                                Rule('/images', endpoint='images'),
+                                Rule('/upload', endpoint='save_file')])
 
 
             # add the method names and the handlers to the dispatcher methods.
@@ -40,6 +44,18 @@ class RpcServer(object):
                 debug_logger.debug("could not read file" + str(e))
                 raise NotFound()
             return Response(wrap_file(environ, file), direct_passthrough=True)
+
+        def save_file(self, environ, request):
+            try:
+                file = request.files['image']
+                filename = 'images/'+request.form["btn_name"].strip('"')+".jpg"
+                id = request.form['btn_id']
+                txt = request.form['btn_text'].strip('"')
+                file.save(filename)
+                dispatcher['update_image'](id, txt, filename)
+            except Exception:
+                return NotFound()
+            return Response("Ok")
 
         @responder
         def application(self, environ, start_response):
