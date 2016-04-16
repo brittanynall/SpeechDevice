@@ -2,7 +2,7 @@ from PyQt5 import QtGui, QtCore, QtWidgets, uic
 import logging
 from Button import *
 from BtnDb import BtnDb
-
+import pyttsx
 debug_logger = logging.getLogger(__name__)
 
 
@@ -14,15 +14,28 @@ class Main(QtWidgets.QMainWindow):
         self.db_logger = db_logger
         self.btn_array = ButtonArray()
 
+        # Add speech to text
+        self.engine = pyttsx.init()
+        self.engine.setProperty('rate', (self.engine.getProperty('rate')-75))
+        self.engine.setProperty('volume', 100)
+        self.slider.valueChanged.connect(self.update_volume())
+
         # Add button to the btn array
         for btn in self.create_buttons():
             self.btn_array.add_btn(btn)
+
+    def update_volume(self):
+        v = self.slider.value()
+        self.engine.setProperty('volume',v)
 
     def on_btn_clicked(self, text):
         """
         Common slot for all
         :return:
         """
+        self.engine.say(text)
+        self.engine.runAndWait()
+
         if self.db_logger:
             self.db_logger.add_data(text)
 
